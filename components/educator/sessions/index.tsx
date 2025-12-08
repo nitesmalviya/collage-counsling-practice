@@ -3,11 +3,11 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Calendar, Clock, Video, User } from "lucide-react"
+import { Calendar, Clock, Video, User, CalendarX } from "lucide-react"
 import { useEffect, useState } from "react"
 import { getSessionsAction } from "@/utils/graphql/sessions/action";
 import SessionCards from "./session-cards";
-
+import DataNotFound from "@/components/ui/data-not-found"
 
 const Sessions = ({ educatorSessions }: any) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -54,8 +54,6 @@ const Sessions = ({ educatorSessions }: any) => {
         }
     }, [tabValue])
 
-    console.log("sessionData", sessionData)
-
     return (
         <div className="min-h-screen bg-background">
             <div className="container mx-auto px-4 py-8">
@@ -87,11 +85,12 @@ const Sessions = ({ educatorSessions }: any) => {
                                 ))
                             ) : (
                                 !isLoading && (
-                                    <div className="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border p-4 shadow-sm">
-                                        <p className="text-sm text-muted-foreground bg-muted p-3 rounded-lg text-center">
-                                            There are no sessions
-                                        </p>
-                                    </div>
+                                    <DataNotFound
+                                        title={`No ${tabValue} sessions found`}
+                                        description={`You don't have any ${tabValue} sessions at the moment.`}
+                                        iconSlot={<CalendarX className="size-6" />}
+                                        className="px-5"
+                                    />
                                 )
                             )}
                         </TabsContent>
