@@ -1,12 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
-import "./globals.css"
-import { AuthProvider } from "@/contexts/auth-context"
-import { Toaster } from "@/components/ui/toaster"
 import { Header } from "@/components/ui/header"
-import Layout from "@/components/hoc/main-layout"
 
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
@@ -25,13 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`font-sans antialiased`}>
-        <AuthProvider>
-          <Layout>
+        
+          <Header />
           {children}
-          <Toaster />
-          </Layout>
-        </AuthProvider>
-        <Analytics />
+        
       </body>
     </html>
   )

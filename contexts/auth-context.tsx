@@ -37,6 +37,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       name: "Demo User",
       role: "student",
       createdAt: new Date(),
+      active_status: false,
+      avatar_path: "",
+      created_at: "",
+      first_name: "",
+      last_login_at: null,
+      last_name: "",
+      phone: "",
+      platform: "",
+      profile: {
+        timezone: ""
+      }
     }
     setUser(mockUser)
     localStorage.setItem("pathfinder_user", JSON.stringify(mockUser))
@@ -56,6 +67,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       name,
       role,
       createdAt: new Date(),
+      active_status: false,
+      avatar_path: "",
+      created_at: "",
+      first_name: "",
+      last_login_at: null,
+      last_name: "",
+      phone: "",
+      platform: "",
+      profile: {
+        timezone: ""
+      }
     }
     setUser(newUser)
     localStorage.setItem("pathfinder_user", JSON.stringify(newUser))

@@ -1,14 +1,64 @@
+import { time } from "console"
+
 export type UserRole = "student" | "educator" | "admin"
 
 export interface User {
   id: string
   email: string
-  name: string
   role: UserRole
   avatar?: string
   createdAt: Date
+  active_status: boolean;
+  avatar_path: string;
+  created_at: string;
+  first_name: string;
+  name: string;
+  last_login_at: string | null;
+  last_name: string;
+  phone: string;
+  platform: string;
+  profile: {
+    timezone: string;
+  }
 }
 
+export type Step = 1 | 2;
+
+export interface ForgotPasswordForm {
+  email: string;
+  code: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export type SignupFormType = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role: UserRole;
+  active_status: boolean;
+  platform: string;
+  timezone: string;
+  adminSignUp: boolean;
+};
+export interface SignInResponse {
+  signIn?: {
+    success: boolean;
+    message: string;
+    accessToken: string;
+    refreshToken: string;
+    token: string;
+    user: User;
+  }
+  message: string
+  success: boolean
+}
+export interface SignUpRespose {
+  signUp?: SuccessResponse
+  message: string;
+  success: boolean;
+}
 export interface Session {
   id: string
   studentId: string
@@ -94,21 +144,7 @@ export interface ApplicationRequirement {
   dueDate?: string
 }
 
-export interface StudentProfile {
-  id: string
-  studentId: string
-  gpa: number
-  satScore?: number
-  actScore?: number
-  apCourses: string[]
-  honors: string[]
-  extracurriculars: Activity[]
-  awards: string[]
-  volunteerHours: number
-  workExperience: WorkExperience[]
-  intendedMajor: string
-  careerGoals: string
-}
+
 
 export interface Activity {
   id: string
@@ -203,4 +239,87 @@ export interface Scholarship {
   deadline: string
   requirements: string
   status: "Available" | "Applied" | "Awarded" | "Denied"
+}
+export type SignInInput = {
+  email: string;
+  password: string;
+}
+
+export type SignUpInput = SignInInput & {
+  firstName: string;
+  lastName: string;
+  role?: string;
+  platform: string;
+  active_status: boolean;
+}
+export type ConnectedUserType = {
+  name: string;
+  role: string;
+  avatar: string;
+}
+
+export type SuccessResponse = {
+  success: boolean;
+  message: string;
+};
+
+export type AddNoteResponse = {
+  addSessionNotes: SuccessResponse
+};
+
+export interface SingleErrorResponse {
+  message: string;
+  code: string;
+  path: string[];
+  extensions: {
+    code: string;
+    stacktrace: string[];
+  };
+  success?: boolean
+}
+
+export interface ErrorResponse {
+  errors: SingleErrorResponse[];
+}
+
+export type SessionStatusOverview = {
+  booked: number;
+  cancelled: number;
+  completed: number;
+  total: number;
+  upcoming: number;
+  expired: number;
+  waitingForApproval: number;
+}
+export type UserStatusOverview = {
+  educators: number;
+  students: number;
+  total: number;
+};
+
+
+export type AnalyticsResponse = {
+  getAnalytics: {
+    message: string;
+    sessionStatus: SessionStatusOverview
+    success: boolean;
+    userOverview: UserStatusOverview
+  };
+
+  messages: string;
+};
+
+export type TokenResponse = {
+  message: string;
+  gettoken: {
+    message: string;
+    success: boolean;
+    tokenBalance: number;
+  };
+}
+
+export type TimeSlot = {
+  time: string;
+  is_available: boolean;
+  is_disabled?: boolean;
 }
