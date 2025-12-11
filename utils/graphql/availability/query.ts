@@ -39,3 +39,14 @@ export const GET_EDUCATOR_AVAILABILITY_QUERY: DocumentNode = gql`
   }
 }
 `;
+
+
+export const SET_EDUCATOR_AVAILABILITY_MUTATION: DocumentNode = gql`
+mutation SetEducatorAvailability($input: SetAvailabilityInput!) {
+  SetEducatorAvailability(input: $input) {
+    message
+    success
+  }
+}
+`;
+

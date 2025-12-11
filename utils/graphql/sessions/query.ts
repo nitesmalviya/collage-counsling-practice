@@ -52,3 +52,37 @@ export const GET_EDUCATOR_SESSIONS_QUERY: DocumentNode = gql`
   }
 }
 `;
+
+export const GET_EDUCATOR_PROFILE_QUERY: DocumentNode = gql`
+  query GetEducatorProfile($userId: String!) {
+    GetEducatorProfile(userId: $userId) {
+      session_amount
+      availabilities {
+        active_status
+        created_at
+        day_of_week
+        end_time
+        id
+        is_recurring
+        start_time
+        updated_at
+        user_id
+      }
+      averageRating
+      totalreviews
+      user {
+        last_name
+        first_name
+        avatar_path
+        profile {
+          amount
+          bio
+          duration
+          specialization
+          id
+        }
+        id
+      }
+    }
+  }
+`;

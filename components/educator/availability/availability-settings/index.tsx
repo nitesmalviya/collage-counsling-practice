@@ -3,33 +3,31 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import DayRow from "./day-row";
 import SessionDuration from "./session-duration";
-// import { AvailabilityDay, AvailabilitySettingsProps } from "@/types/availability";
+import { AvailabilityDay, AvailabilitySettingsProps } from "@/types/availability";
 
-
-const AvailabilitySettings = ({ form  , onSubmit }: AvailabilitySettingsProps) => {
-
-const [isSaving, setIsSaving] = useState(false);
+const AvailabilitySettings = ({ form, onSubmit }: AvailabilitySettingsProps) => {
+  const [isSaving, setIsSaving] = useState(false);
   const initialDays = Array.isArray(form?.availabilityDays)
-  ? form.availabilityDays.reduce((acc: Record<string, AvailabilityDay>, day: AvailabilityDay) => {
+    ? form.availabilityDays.reduce((acc: Record<string, AvailabilityDay>, day: AvailabilityDay) => {
       acc[day.dayOfWeek] = day;
       return acc;
     }, {})
-  : form?.availabilityDays;
+    : form?.availabilityDays;
 
-const [days, setDays] = useState<Record<string, AvailabilityDay>>(initialDays);
+  const [days, setDays] = useState<Record<string, AvailabilityDay>>(initialDays);
 
   const saveAvailability = async (e: FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
-    await onSubmit({...form, availabilityDays: Object?.values(days)},true);
+    await onSubmit({ ...form, availabilityDays: Object?.values(days) }, true);
 
     setIsSaving(false);
 
   };
 
-useEffect(() => {
-  setDays(initialDays);
-}, [form]);
+  useEffect(() => {
+    setDays(initialDays);
+  }, [form]);
 
 
   return (
@@ -43,15 +41,18 @@ useEffect(() => {
           <SessionDuration />
           <form onSubmit={saveAvailability} className="space-y-2">
             <div className="space-y-6 mt-5">
-               
+              {days && Object.keys(days).map((dayOfWeek) => (
                 <DayRow
-                  
+                  key={dayOfWeek}
+                  dayOfWeek={days[dayOfWeek].dayOfWeek}
+                  day={days[dayOfWeek]}
+                  setDays={setDays}
                 />
-            
+              ))}
             </div>
             <div className="flex items-center justify-end gap-3">
               {/* <Button className="hover:bg-primary/5 hover:text-inherit" type="button" variant="outline">Cancel</Button> */}
-              <Button   disabled={isSaving} type="submit">{isSaving ? "Saving..." : "Save & Update"}</Button>
+              <Button disabled={isSaving} type="submit">{isSaving ? "Saving..." : "Save & Update"}</Button>
             </div>
           </form>
         </CardContent>

@@ -1,30 +1,35 @@
 "use client";
 
-// import { getUserDetails, parsedTokenAmount } from "@/utils/common-service";
-// import { getEducatorProfileAction } from "@/utils/graphql/sessions/action";
+import { getUserDetails, parsedTokenAmount } from "@/utils/common-service";
+import { getEducatorProfileAction } from "@/utils/graphql/sessions/action";
 import { Clock } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const SessionDuration = () => {
-  // const userDetails = getUserDetails();
+  const userDetails = getUserDetails();
 
   const [sessionDuration, setSessionDuration] = useState<Record<string, number>>({});
-  // const fetchProfile = async () => {
-  //   try {
-  //     const res = await getEducatorProfileAction(userDetails?.id);
-  //     const parsedDurations = parsedTokenAmount(
-  //       res.GetEducatorProfile?.session_amount ?? "{30:50,60:100}"
-  //     );
+  const fetchProfile = async () => {
+    try {
+      const res = await getEducatorProfileAction(userDetails?.id);
+      debugger
+      const parsedDurations = parsedTokenAmount(
+        // res.GetEducatorProfile?.session_amount ?? "{30:50,60:100}"
+        "{30:50,60:100}"
+      );
 
-  //     setSessionDuration(parsedDurations);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+      setSessionDuration(parsedDurations);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  // useEffect(() => {
-  //   fetchProfile();
-  // }, []);
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  console.log(sessionDuration, "session Duration");
+
 
   return (
     <div className="space-y-3">
@@ -34,29 +39,20 @@ const SessionDuration = () => {
       </label>
 
       <div className="grid grid-cols-2 gap-3">
-       
+        
+        {Object.keys(sessionDuration)?.map((sd: string) => (
           <button
-            
+            key={sd}
             className={`p-4 rounded-lg border-2 transition-all text-left 
               border-border hover:border-primary/50
             `}
           >
-            <div className="font-semibold">30 min</div>
+            <div className="font-semibold">{sd} min</div>
             <div className="text-sm text-muted-foreground mt-1">
-              100 tokens
+              {sessionDuration[sd]} tokens
             </div>
           </button>
-          <button
-            
-            className={`p-4 rounded-lg border-2 transition-all text-left 
-              border-border hover:border-primary/50
-            `}
-          >
-            <div className="font-semibold">60 min</div>
-            <div className="text-sm text-muted-foreground mt-1">
-              200 tokens
-            </div>
-          </button>
+        ))}
       </div>
     </div>
   );
