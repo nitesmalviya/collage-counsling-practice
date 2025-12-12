@@ -23,7 +23,7 @@ const Availability = ({ data }: AvailabilityProps) => {
           ? data?.availabilityDays
           : DEFAULT_AVAILABILITY_FORM.availabilityDays,
       break: {
-        brak_between_interval:
+        break_between_interval:
           data?.break?.break_between_interval ??
           DEFAULT_AVAILABILITY_FORM.break.break_between_interval,
         interval_status:
@@ -75,7 +75,7 @@ const Availability = ({ data }: AvailabilityProps) => {
       console.log("Error", error);
     }
   }
-  
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-2">
