@@ -4,9 +4,9 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-// import moment from "moment";
-// import { GAP_OPTIONS } from "@/utils/constant";
-// import { BreakSettingsProps } from "@/types/availability";
+import moment from "moment";
+import { GAP_OPTIONS } from "@/utils/constant";
+import { BreakSettingsProps } from "@/types/availability";
 import { Clock } from "lucide-react";
 const BreakSettings = ({
   enableLunchBreak,
@@ -42,7 +42,8 @@ const BreakSettings = ({
           <div className="relative">
           <Input
               type="time"
-              
+              value={moment(lunchStart, "HH:mm").format("HH:mm")}
+              onChange={(e) => setLunchStart(moment(e.target.value, "HH:mm").format("HH.mm"))}
             />
           <Clock className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           </div>
@@ -56,7 +57,9 @@ const BreakSettings = ({
           <div className="relative">
           <Input
               type="time"
-                
+                value={moment(lunchEnd, "HH:mm").format("HH:mm")}
+
+              onChange={(e) => setLunchEnd(moment(e.target.value, "HH:mm").format("HH.mm"))}
             />
           <Clock className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           </div>
@@ -77,21 +80,21 @@ const BreakSettings = ({
         />
       </div>
 
-     
+      {enableGap && (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-5 space-y-4">
-          
+          {GAP_OPTIONS.map((g: number) => (
             <Button
-             
-              className={"hover:bg-primary/5 hover:text-inherit"}
+              key={g}
+              className={gapMinutes !== g ? "hover:bg-primary/5 hover:text-inherit" : ""}
               type="button"
-              variant="default"
-           
+              variant={gapMinutes === g ? "default" : "outline"}
+              onClick={() => setGapMinutes(g)}
             >
-              5 Minutes
+              {g} Minutes
             </Button>
-         
+          ))}
         </div>
-     
+      )}
     </div>
   );
 };

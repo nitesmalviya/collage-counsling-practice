@@ -6,7 +6,9 @@ import { DayRowProps } from "@/types/availability";
 
 
 const DayRow = ({ day, setDays, dayOfWeek }: DayRowProps) => {
+
   const onStartChange = (time: string) => {
+
     setDays((prev) => ({
       ...prev,
       [dayOfWeek]: {
@@ -14,17 +16,17 @@ const DayRow = ({ day, setDays, dayOfWeek }: DayRowProps) => {
         startTime: time,
       },
     }));
-  }
+  };
 
   const onEndChange = (time: string) => {
     setDays((prev) => ({
       ...prev,
       [dayOfWeek]: {
         ...prev[dayOfWeek],
-        endTime: time
-      }
-    }))
-  }
+        endTime: time,
+      },
+    }));
+  };
 
   return (
     <>
@@ -37,9 +39,9 @@ const DayRow = ({ day, setDays, dayOfWeek }: DayRowProps) => {
                 ...prev,
                 [dayOfWeek]: {
                   ...prev[dayOfWeek],
-                  fullDay: Boolean(v)
-                }
-              }))
+                  fullDay: Boolean(v),
+                },
+              }));
             }}
           />
           <div className="w-24 text-sm font-medium">{dayOfWeek}</div>  {/* Display the day name directly */}
@@ -50,7 +52,7 @@ const DayRow = ({ day, setDays, dayOfWeek }: DayRowProps) => {
               <Input
                 type="time"
                 value={moment(day?.startTime, "HH:mm").format("HH:mm")}
-                onChange={(e) => onStartChange(moment(e.target.value, "HH:mm").format("HH:mm"))}
+                onChange={(e) => onStartChange(moment(e.target.value, "HH:mm").format("HH.mm"))}
               />
               <Clock className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             </div>
@@ -59,7 +61,7 @@ const DayRow = ({ day, setDays, dayOfWeek }: DayRowProps) => {
               <Input
                 type="time"
                 value={moment(day?.endTime, "HH:mm").format("HH:mm")}
-                onChange={(e) => onEndChange(moment(e.target.value, "HH:mm").format("HH:mm"))}
+                onChange={(e) => onEndChange(moment(e.target.value, "HH:mm").format("HH.mm"))}
               />
               <Clock className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             </div>

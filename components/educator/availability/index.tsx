@@ -28,7 +28,7 @@ const Availability = ({ data }: AvailabilityProps) => {
           DEFAULT_AVAILABILITY_FORM.break.break_between_interval,
         interval_status:
           data?.break?.interval_status ??
-          DEFAULT_AVAILABILITY_FORM.break.interval_status
+          DEFAULT_AVAILABILITY_FORM.break.interval_status,
       },
       lunchBreak: {
         startTime:
@@ -39,27 +39,24 @@ const Availability = ({ data }: AvailabilityProps) => {
           DEFAULT_AVAILABILITY_FORM.lunchBreak.endTime,
         lunchBreak:
           data?.lunchBreak?.lunchBreak ??
-          DEFAULT_AVAILABILITY_FORM.lunchBreak.lunchBreak
+          DEFAULT_AVAILABILITY_FORM.lunchBreak.lunchBreak,
       },
-      overides: [],
+      overrides: [],
       slot_duration:
         data?.slot_duration?.length > 0
           ? data?.slot_duration
           : DEFAULT_AVAILABILITY_FORM.slot_duration,
 
-      unavailabilityDays:
-        data?.unavailabilityDays?.length > 0
-          ? data?.unavailabilityDays
-          : DEFAULT_AVAILABILITY_FORM.unavailabilityDays
+      unavailabilityDays: data?.unavailabilityDays?.length > 0 ? data?.unavailabilityDays : DEFAULT_AVAILABILITY_FORM.unavailabilityDays,
     });
-  }, []);
+  }, [data]);
 
   const saveAvailability = async (data: SetAvailabilityInput, isAvailability: boolean = false) => {
     try {
       let res = await setAvailability(data);
-      debugger
+       
       if (res.SetEducatorAvailability.success) {
-        
+
         toast({
           title: isAvailability ? "Availability saved" : "Unavailability saved",
           description: isAvailability ? res.SetEducatorAvailability.message : "Unavailability set successfully"
