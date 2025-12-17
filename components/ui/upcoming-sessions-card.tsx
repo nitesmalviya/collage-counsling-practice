@@ -1,10 +1,10 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Calendar, Clock } from "lucide-react"
 import Link from "next/link"
-// import { FormattedSession } from "@/utils/common-service"
+import { FormattedSession } from "@/utils/common-service"
 import PageSubHeading from "./page-sub-heading"
 
 interface UpcomingSessionsCardProps {
@@ -41,9 +41,6 @@ export function UpcomingSessionsCard({
                   </span>
                 </div>
               </div>
-              {/* <Button size="sm" variant="outline">
-                      View
-                    </Button> */}
             </div>
           ))
         ) :

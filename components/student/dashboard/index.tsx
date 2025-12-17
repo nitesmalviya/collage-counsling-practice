@@ -9,30 +9,28 @@ import { useAppSelector } from "@/store/hooks";
 import PageHeader from "@/components/ui/page-header";
 import { StudentDashboardData } from "@/types/dashboard"
 import DashboardCard from "@/components/ui/dashboard-card"
+import { UpcomingSessionsCard } from "@/components/ui/upcoming-sessions-card"
+import { Session } from "@/types/sessions"
 
 interface DashboardProps {
-    dashboardStudentData: StudentDashboardData
+    dashboardStudentData: StudentDashboardData,
+    upcomingSessionDataList: Session[]
 }
 
-const StudentDashboard = ({ dashboardStudentData }: DashboardProps) => {
+const StudentDashboard = ({ dashboardStudentData, upcomingSessionDataList }: DashboardProps) => {
     const user = useAppSelector(state => state.auth.user);
-    console.log(dashboardStudentData, "Dashboard Student Data");
     const { completedSessions, tokenBalance, upcomingSessions } = dashboardStudentData;
-
-    // const upcomingSessions = mockSessions.filter((s) => s.status === "upcoming" && s.studentId === "stu-1").slice(0, 2)
-
-    // const completedSessionsCount = mockSessions.filter((s) => s.status === "completed" && s.studentId === "stu-1").length
 
     const recentMessages = mockChatConversations.slice(0, 2).map((conv) => ({
         id: conv.id,
         from: conv.participantName,
         message: conv.lastMessage,
         time: conv.lastMessageTime,
-    }))
+    }));
 
     const unreadMessages = mockChatConversations.reduce((sum, conv) => sum + conv.unread, 0);
 
-    console.log(user, "user user");
+    console.log(upcomingSessionDataList, "upcomingSessionDataList");
 
 
     return (
@@ -58,74 +56,26 @@ const StudentDashboard = ({ dashboardStudentData }: DashboardProps) => {
                             description={`+12% from last month`}
                             icon={<Calendar className="h-4 w-4 text-muted-foreground" />}
                         />
-                        
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium"></CardTitle>
-                                <Calendar className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{upcomingSessions}</div>
-                                <p className="text-xs text-muted-foreground">This week</p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Completed Sessions</CardTitle>
-                                <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{completedSessions}</div>
-                                <p className="text-xs text-muted-foreground">Total sessions</p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Unread Messages</CardTitle>
-                                <MessageSquare className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{unreadMessages}</div>
-                                <p className="text-xs text-muted-foreground">New messages</p>
-                            </CardContent>
-                        </Card>
+                        <DashboardCard
+                            title="Completed Sessions"
+                            value={completedSessions}
+                            description={`+12% from last month`}
+                            icon={<CheckCircle2 className="h-4 w-4 text-muted-foreground" />}
+                        />
+                        <DashboardCard
+                            title="Unread Messages"
+                            value={unreadMessages}
+                            description={`+12% from last month`}
+                            icon={<MessageSquare className="h-4 w-4 text-muted-foreground" />}
+                        />
                     </div>
 
                     {/* Main Content Grid */}
                     <div className="grid gap-6 md:grid-cols-2">
                         {/* Upcoming Sessions */}
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Upcoming Sessions</CardTitle>
-                                <CardDescription>Your scheduled counseling sessions</CardDescription>
-                            </CardHeader>
-                            <CardContent className="space-y-4">
-                                {/* {completedSessions.map((session) => (
-                                    <div key={session.id} className="flex items-start justify-between p-4 border rounded-lg">
-                                        <div className="space-y-1">
-                                            <p className="font-medium">{session.title}</p>
-                                            <p className="text-sm text-muted-foreground">{session.educatorName}</p>
-                                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                                                <span className="flex items-center gap-1">
-                                                    <Calendar className="w-3 h-3" />
-                                                    {new Date(session.date).toLocaleDateString()} at {session.time}
-                                                </span>
-                                                <span className="flex items-center gap-1">
-                                                    <Clock className="w-3 h-3" />
-                                                    {session.duration} min
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <Button size="sm" variant="outline">
-                                            View
-                                        </Button>
-                                    </div>
-                                ))} */}
-                                <Button className="w-full" asChild>
-                                    <Link href="/student/sessions">View All Sessions</Link>
-                                </Button>
-                            </CardContent>
-                        </Card>
+                        <UpcomingSessionsCard 
+                                sessions={upcomingSessionDataList}
+                                viewAllLink="/student/sessions"/>
 
                         {/* Recent Messages */}
                         <Card>

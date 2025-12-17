@@ -36,8 +36,8 @@ export interface Session {
   student: Student;
   scheduled_at_start_time: string;
   rescheduled_at_start_time: string;
-
   duration_min: number;
+  
 }
 
 export interface GetMySessionsResponse {

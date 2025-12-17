@@ -15,10 +15,12 @@ export const GET_EDUCATOR_DASHBOARD_QUERY: DocumentNode = gql`
 
 export const GET_STUDENT_DASHBOARD_QUERY: DocumentNode = gql`
   query GetStudentDashboard($userId: String!) {
-    getStudentDashboard(userId: $userId) {
-      completedSessions
-      tokenBalance
-      upcomingSessions
-    }
+  getStudentDashboard(userId: $userId) {
+    completedSessions
+    message
+    success
+    tokenBalance
+    upcomingSessions
   }
+}
 `;
