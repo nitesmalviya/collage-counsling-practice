@@ -1,6 +1,5 @@
 
 import Dashboard from "@/components/student/dashboard"
-import { StudentNav } from "@/components/navigation/student-nav"
 import { getStudentDashboardAction } from "@/utils/graphql/dashboard/action"
 import { cookies } from "next/headers"
 import { STORAGE_KEYS } from "@/utils/constant"
@@ -27,7 +26,7 @@ const StudentDashboard = async () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <StudentNav />
+       
       <Dashboard 
                 dashboardStudentData={dashboardStudentData} 
                 upcomingSessionDataList={upcomingSessionDataList}

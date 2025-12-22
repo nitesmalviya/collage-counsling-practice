@@ -21,7 +21,7 @@ const EducatorNav = () => {
   const pathname = usePathname()
 
   const handleLogout = () => {
-    debugger
+     
     logout()
     router.push("/")
   }

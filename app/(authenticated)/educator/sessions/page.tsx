@@ -10,7 +10,9 @@ const EducatorSessions = async () => {
     "filter": "UPCOMING"
   }
 });
+
   const educatorSessionsList  = res?.getSessions || [];
+
   return (
     <Sessions educatorSessions={educatorSessionsList} />
   )

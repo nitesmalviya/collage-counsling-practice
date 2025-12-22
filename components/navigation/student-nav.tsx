@@ -15,7 +15,7 @@ import {
 import { Home, Calendar, MessageSquare, Wallet, BookOpen, LogOut } from "lucide-react"
 import Link from "next/link"
 
-export function StudentNav() {
+const StudentNav = () => {
   const { user, logout } = useAuth()
   const router = useRouter()
   const pathname = usePathname()
@@ -85,3 +85,6 @@ export function StudentNav() {
     </nav>
   )
 }
+
+
+export default StudentNav;

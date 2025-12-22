@@ -1,9 +1,6 @@
 "use client"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Calendar, Clock, Video, User, CalendarX } from "lucide-react"
+import { CalendarX } from "lucide-react"
 import { useEffect, useState } from "react"
 import { getSessionsAction } from "@/utils/graphql/sessions/action";
 import SessionCards from "./session-cards";
@@ -17,14 +14,15 @@ const Sessions = ({ educatorSessions }: any) => {
     const upcomingCount = sessions?.upcomingCount || 0;
     const expiredCount = sessions?.expiredCount || 0;
     const allSessions = sessions.sessions || [];
+    
     const [sessionData, setSessionData] = useState(allSessions)
     const [tabValue, setTabValue] = useState("upcoming")
-
 
     const handleTab = (value: string) => {
         setTabValue(value)
         sessionData([])
     }
+
     const fetchSessionData = async (tabValue: string) => {
         setIsLoading(true);
         try {

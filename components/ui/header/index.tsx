@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Home, Calendar, MessageSquare, DollarSign, Clock, LogOut, User } from "lucide-react"
+import { Home, Calendar, MessageSquare, DollarSign, Clock, LogOut, User, Wallet, BookOpen } from "lucide-react"
 import Link from "next/link"
 import { getUserDetails } from "@/utils/common-service"
 import { useAppDispatch } from "@/store/hooks"
@@ -30,24 +30,33 @@ export function Header() {
 
   const logout = async () => {
     try {
-
       const res = await dispatch(appLogout());
-      console.log(res, "kl");
-
       router.push("/");
+      return res;
     } catch (e) {
       console.error("Logout failed:", e);
     }
   };
 
-  const navItems = [
+  const educatorNavItems = [
     { href: "/educator/dashboard", label: "Dashboard", icon: Home },
     { href: "/educator/sessions", label: "Sessions", icon: Calendar },
     { href: "/educator/chat", label: "Chat", icon: MessageSquare },
     { href: "/educator/availability", label: "Availability", icon: Clock },
-    // { href: "/educator/profile", label: "Profile", icon: Clock },
     { href: "/educator/earnings", label: "Earnings", icon: DollarSign },
   ]
+
+  const studentNavItems = [
+    { href: "/student/dashboard", label: "Dashboard", icon: Home },
+    { href: "/student/sessions", label: "Sessions", icon: Calendar },
+    { href: "/student/chat", label: "Chat", icon: MessageSquare },
+    { href: "/student/wallet", label: "Wallet", icon: Wallet },
+    { href: "/student/resources", label: "Resources", icon: BookOpen },
+  ]
+
+  if (user?.role === "student") {
+    educatorNavItems.splice(0, educatorNavItems.length, ...studentNavItems);
+  }
 
   return (
     <nav className="border-b bg-card">
@@ -58,7 +67,7 @@ export function Header() {
               Pathfinder
             </Link>
             <div className="hidden md:flex items-center gap-1">
-              {navItems.map((item) => {
+              {educatorNavItems.map((item) => {
                 const Icon = item.icon
                 const isActive = pathname === item.href
                 return (

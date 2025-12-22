@@ -1,16 +1,73 @@
 "use client"
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Calendar, Clock, Video, User } from "lucide-react"
-import { mockSessions, mockEducators } from "@/lib/mock-data"
+import { CalendarX } from "lucide-react"
 import PageHeader from "@/components/ui/page-header"
+import { useEffect, useState } from "react"
+import SessionCards from "./session-cards"
+import { getSessionsAction } from "@/utils/graphql/sessions/action"
+import DataNotFound from "@/components/ui/data-not-found"
 
-const Sessions = () => {
-    const upcomingSessions = mockSessions.filter((s) => s.status === "upcoming" && s.studentId === "stu-1")
-    const completedSessions = mockSessions.filter((s) => s.status === "completed" && s.studentId === "stu-1")
+interface Session {
+  id: string;
+}
+
+interface SessionsProps {
+  sessions: never[]
+  expiredCount: number
+  upcomingCount: number
+  completedCount: number
+  canceledCount: number
+  studentSessions: {
+    completedCount: number;
+    canceledCount: number;
+    upcomingCount: number;
+    expiredCount: number;
+    sessions: Session[];
+  };
+}
+const Sessions = ({ studentSessions }: { studentSessions: SessionsProps }) => {
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const sessions = studentSessions || [];
+    const completedCount = sessions?.completedCount || 0;
+    const canceledCount = sessions?.canceledCount || 0;
+    const upcomingCount = sessions?.upcomingCount || 0;
+    const expiredCount = sessions?.expiredCount || 0;
+    const allSessions = sessions.sessions || [];
+    const [sessionData, setSessionData] = useState(allSessions)
+    const [tabValue, setTabValue] = useState("upcoming")
+
+    const handleTab = (value: string) => {
+        setTabValue(value)
+        setSessionData([])
+    }
+
+    const fetchSessionData = async (tabValue: string) => {
+        setIsLoading(true);
+        try {
+            const res = await getSessionsAction({
+                "input": {"limit": 10,"name": "","page": 1,"filter": tabValue?.toUpperCase()
+                }
+            });
+            return res;
+        } catch (error) {
+            console.log(error, "the repected api was failed");
+            return null;
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        if (tabValue) {
+            fetchSessionData(tabValue).then((res) => {
+                const studentSessionsList = res?.getSessions?.sessions || [];
+                setSessionData(studentSessionsList)
+            })
+            
+        }
+    }, [tabValue]);
+
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -22,155 +79,40 @@ const Sessions = () => {
                     />
                     <Button>Book New Session</Button>
                 </div>
-
-                <Tabs defaultValue="upcoming" className="space-y-6">
+                <Tabs value={tabValue} onValueChange={handleTab} className="space-y-6">
                     <TabsList>
-                        <TabsTrigger value="upcoming">Upcoming ({upcomingSessions.length})</TabsTrigger>
-                        <TabsTrigger value="completed">Completed ({completedSessions.length})</TabsTrigger>
-                        <TabsTrigger value="educators">Find Educators</TabsTrigger>
+                        <TabsTrigger value="upcoming">Upcoming ({upcomingCount})</TabsTrigger>
+                        <TabsTrigger value="completed">Completed ({completedCount})</TabsTrigger>
+                        <TabsTrigger value="canceled">Canceled ({canceledCount})</TabsTrigger>
+                        <TabsTrigger value="expired">Expired ({expiredCount})</TabsTrigger>
                     </TabsList>
-
-                    <TabsContent value="upcoming" className="space-y-4">
-                        {upcomingSessions.map((session) => (
-                            <Card key={session.id}>
-                                <CardContent className="p-6">
-                                    <div className="flex items-start justify-between">
-                                        <div className="space-y-3 flex-1">
-                                            <div className="flex items-start justify-between">
-                                                <div>
-                                                    <h3 className="text-xl font-semibold">{session.title}</h3>
-                                                    <p className="text-muted-foreground flex items-center gap-2 mt-1">
-                                                        <User className="w-4 h-4" />
-                                                        {session.educatorName}
-                                                    </p>
-                                                </div>
-                                                <Badge>{session.type}</Badge>
-                                            </div>
-                                            <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                                                <span className="flex items-center gap-2">
-                                                    <Calendar className="w-4 h-4" />
-                                                    {new Date(session.date).toLocaleDateString("en-US", {
-                                                        weekday: "long",
-                                                        month: "long",
-                                                        day: "numeric",
-                                                    })}
-                                                </span>
-                                                <span className="flex items-center gap-2">
-                                                    <Clock className="w-4 h-4" />
-                                                    {session.time} ({session.duration} min)
-                                                </span>
-                                            </div>
-                                            {session.notes && (
-                                                <p className="text-sm text-muted-foreground bg-muted p-3 rounded-lg">
-                                                    <strong>Notes:</strong> {session.notes}
-                                                </p>
-                                            )}
-                                        </div>
-                                        <div className="flex flex-col gap-2 ml-4">
-                                            <Button size="sm">
-                                                <Video className="w-4 h-4 mr-2" />
-                                                Join Session
-                                            </Button>
-                                            <Button size="sm" variant="outline">
-                                                Reschedule
-                                            </Button>
-                                            <Button size="sm" variant="ghost">
-                                                Cancel
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </TabsContent>
-
-                    <TabsContent value="completed" className="space-y-4">
-                        {completedSessions.map((session) => (
-                            <Card key={session.id}>
-                                <CardContent className="p-6">
-                                    <div className="flex items-start justify-between">
-                                        <div className="space-y-3 flex-1">
-                                            <div className="flex items-start justify-between">
-                                                <div>
-                                                    <h3 className="text-xl font-semibold">{session.title}</h3>
-                                                    <p className="text-muted-foreground flex items-center gap-2 mt-1">
-                                                        <User className="w-4 h-4" />
-                                                        {session.educatorName}
-                                                    </p>
-                                                </div>
-                                                <Badge variant="secondary">{session.type}</Badge>
-                                            </div>
-                                            <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                                                <span className="flex items-center gap-2">
-                                                    <Calendar className="w-4 h-4" />
-                                                    {new Date(session.date).toLocaleDateString("en-US", {
-                                                        weekday: "long",
-                                                        month: "long",
-                                                        day: "numeric",
-                                                    })}
-                                                </span>
-                                                <span className="flex items-center gap-2">
-                                                    <Clock className="w-4 h-4" />
-                                                    {session.time} ({session.duration} min)
-                                                </span>
-                                            </div>
-                                            {session.notes && (
-                                                <p className="text-sm text-muted-foreground bg-muted p-3 rounded-lg">{session.notes}</p>
-                                            )}
-                                        </div>
-                                        <div className="flex flex-col gap-2 ml-4">
-                                            <Button size="sm" variant="outline">
-                                                View Notes
-                                            </Button>
-                                            <Button size="sm" variant="outline">
-                                                Book Again
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </TabsContent>
-
-                    <TabsContent value="educators" className="space-y-4">
-                        <div className="grid gap-6 md:grid-cols-2">
-                            {mockEducators.map((educator) => (
-                                <Card key={educator.id}>
-                                    <CardHeader>
-                                        <div className="flex items-start gap-4">
-                                            <img
-                                                src={educator.avatar || "/placeholder.svg"}
-                                                alt={educator.name}
-                                                className="w-16 h-16 rounded-full"
-                                            />
-                                            <div className="flex-1">
-                                                <CardTitle>{educator.name}</CardTitle>
-                                                <CardDescription>{educator.title}</CardDescription>
-                                                <div className="flex items-center gap-2 mt-2">
-                                                    <Badge variant="secondary">{educator.specialty}</Badge>
-                                                    <span className="text-sm text-muted-foreground">
-                                                        ⭐ {educator.rating} ({educator.reviews} reviews)
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent className="space-y-4">
-                                        <p className="text-sm text-muted-foreground">{educator.bio}</p>
-                                        <div className="flex items-center justify-between">
-                                            <span className="text-lg font-semibold">${educator.hourlyRate}/hour</span>
-                                            <Button>Book Session</Button>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
+                    <TabsContent value={tabValue} className="space-y-4">
+                        {isLoading && (
+                            <div className="flex items-center justify-center py-20">
+                                <div className="animate-spin rounded-full h-12 w-12 border-b-3 border-primary"></div>
+                            </div>
+                        )}
+                        {sessionData.length > 0 && !isLoading ? (
+                            sessionData.map((session: any) => (
+                                <SessionCards
+                                    key={session.id}
+                                    session={session} />
+                            ))
+                        ) : (
+                            !isLoading && (
+                                <DataNotFound
+                                    title={`No ${tabValue} sessions found`}
+                                    description={`You don't have any ${tabValue} sessions at the moment.`}
+                                    iconSlot={<CalendarX className="size-6" />}
+                                    className="px-5"
+                                />
+                            )
+                        )}
                     </TabsContent>
                 </Tabs>
             </div>
         </div>
     )
 }
-
 
 export default Sessions;
