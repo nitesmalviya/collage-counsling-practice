@@ -1,6 +1,5 @@
 "use client"
 
-import { StudentNav } from "@/components/navigation/student-nav"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -13,7 +12,6 @@ export default function StudentResources() {
 
   return (
     <div className="min-h-screen bg-background">
-      <StudentNav />
       <div className="container mx-auto px-4 py-8">
         <div className="space-y-6">
           <div>

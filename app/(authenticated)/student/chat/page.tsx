@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { StudentNav } from "@/components/navigation/student-nav"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -18,7 +17,7 @@ export default function StudentChat() {
 
   return (
     <div className="min-h-screen bg-background">
-      <StudentNav />
+
       <div className="container mx-auto px-4 py-8">
         <div className="space-y-6">
           <div>

@@ -23,6 +23,7 @@ interface SessionProps {
 }
 
 const SessionCards = ({ session }: SessionProps) => {
+    console.log(session.status, "sessionsessionsession")
 
     return (
         <>
@@ -38,7 +39,14 @@ const SessionCards = ({ session }: SessionProps) => {
                                         {session.educator.first_name} {session.educator.last_name}
                                     </p>
                                 </div>
-                                <Badge>{session.status}</Badge>
+                                <span className={`px-2 py-1 text-xs rounded-md text-white capitalize
+                                    ${session.status === "COMPLETED" ? "bg-green-500" :
+                                    session.status === "CANCELLED" ? "bg-red-400 text-black" :
+                                    session.status === "UPCOMING" ? "bg-blue-500" :
+                                    session.status === "EXPIRED" ? "bg-red-500" :
+                                    "bg-yellow-500"}`}>
+                                    {session.status}
+                                </span>
                             </div>
                             <div className="flex items-center gap-6 text-sm text-muted-foreground">
                                 <span className="flex items-center gap-2">

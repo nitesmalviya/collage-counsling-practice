@@ -83,7 +83,7 @@ const Sessions = ({ studentSessions }: { studentSessions: SessionsProps }) => {
                     <TabsList>
                         <TabsTrigger value="upcoming">Upcoming ({upcomingCount})</TabsTrigger>
                         <TabsTrigger value="completed">Completed ({completedCount})</TabsTrigger>
-                        <TabsTrigger value="canceled">Canceled ({canceledCount})</TabsTrigger>
+                        <TabsTrigger value="cancelled">Canceled ({canceledCount})</TabsTrigger>
                         <TabsTrigger value="expired">Expired ({expiredCount})</TabsTrigger>
                     </TabsList>
                     <TabsContent value={tabValue} className="space-y-4">

@@ -20,6 +20,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state :any, action: PayloadAction<any>) => {
+      debugger
       Cookies.set("access_token", action.payload.access_token);
       Cookies.set("refresh_token", action.payload.refresh_token);
       Cookies.set("user", JSON.stringify(action.payload.user))
