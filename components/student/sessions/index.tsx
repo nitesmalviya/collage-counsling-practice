@@ -64,7 +64,6 @@ const Sessions = ({ studentSessions }: { studentSessions: SessionsProps }) => {
                 const studentSessionsList = res?.getSessions?.sessions || [];
                 setSessionData(studentSessionsList)
             })
-            
         }
     }, [tabValue]);
 
