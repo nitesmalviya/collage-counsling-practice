@@ -1,7 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Wallet } from "lucide-react"
 
-const BalanceCard = ({ resToken }: any) => {
+interface BalanceCardProps {
+    resToken: number
+}
+
+const BalanceCard = ({ resToken }: BalanceCardProps) => {
     return (
         <Card className="bg-gradient-to-br from-primary/10 to-primary/5">
             <CardContent className="p-8">

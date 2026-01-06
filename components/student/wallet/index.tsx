@@ -1,13 +1,9 @@
-
 "use client"
-
-import { Plus, ArrowUpRight, ArrowDownRight, RefreshCw, Wallet } from "lucide-react"
-import { mockWalletTransactions } from "@/lib/mock-data"
+import { ArrowUpRight, ArrowDownRight, RefreshCw } from "lucide-react"
 import PageHeader from "@/components/ui/page-header"
 import DashboardCard from "@/components/ui/dashboard-card"
 import { mapWalletTransactions } from "@/utils/server-common"
 import TransactionsHistory from "./transactions-history"
-import { useAppSelector } from "@/store/hooks"
 import { getUpdatedTokenAction } from "@/utils/graphql/auth/action"
 import { useEffect, useState } from "react"
 import BalanceCard from "./balance-card"
@@ -43,18 +39,12 @@ interface WalletProps {
 
 const StudentWallet = ({ walletSummary, transactionHistory }: WalletProps) => {
     const [resToken, setResToken] = useState(0);
-    const tokenBalance = mockWalletTransactions.reduce((sum, txn) => sum + txn.tokens, 0)
-
-    console.log(walletSummary);
-
     const totalPurchased = walletSummary.totalPurchased;
     const totalSpent = walletSummary.totalSpent;
     const totalRefunds = walletSummary.totalRefunded;
 
-
     const transactions = mapWalletTransactions(transactionHistory.transactions);
-    const totalTransactions = transactionHistory.total;
-
+    // const totalTransactions = transactionHistory.total;
 
     const fetchUpdatedTokenBalance = async () => {
         try {
@@ -71,10 +61,9 @@ const StudentWallet = ({ walletSummary, transactionHistory }: WalletProps) => {
         fetchUpdatedTokenBalance();
     }, [])
 
-
-    console.log(resToken, "tokenRestokenRes")
-
-
+    const purchaseCount = transactions.filter(t => t.type === "purchase").length;
+    const spentCount = transactions.filter(t => t.type === "spent").length;
+    const refundCount = transactions.filter(t => t.type === "refund").length;
     return (
         <>
             <div className="container mx-auto px-4 py-8">
@@ -93,19 +82,19 @@ const StudentWallet = ({ walletSummary, transactionHistory }: WalletProps) => {
                         <DashboardCard
                             title="Total Purchased"
                             value={`${totalPurchased} tokens`}
-                            description={`${mockWalletTransactions.filter((t) => t.type === "purchase").length} transactions`}
+                            description={`${purchaseCount} transactions`}
                             icon={<ArrowDownRight className="h-4 w-4 text-green-500" />}
                         />
                         <DashboardCard
                             title="Total Spent"
                             value={`${totalSpent} tokens`}
-                            description={`${mockWalletTransactions.filter((t) => t.type === "spent").length} sessions`}
+                            description={`${spentCount} sessions`}
                             icon={<ArrowUpRight className="h-4 w-4 text-red-500" />}
                         />
                         <DashboardCard
                             title="Refunds"
                             value={`${totalRefunds} tokens`}
-                            description={`${mockWalletTransactions.filter((t) => t.type === "refund").length} refunds`}
+                            description={`${refundCount} refunds`}
                             icon={<RefreshCw className="h-4 w-4 text-blue-500" />}
                         />
                     </div>

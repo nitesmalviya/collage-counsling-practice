@@ -18,8 +18,6 @@ const StudentDashboard = async () => {
   const dashboardStudentData: StudentDashboardData = res?.getStudentDashboard || {
     completedSessions: 0,
     tokenBalance: 0,
-
-  
     upcomingSessions: 0
   }
 

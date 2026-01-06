@@ -26,7 +26,8 @@ const TransactionsHistory = ({ transactions }: { transactions: Transaction[] }) 
                         <div key={transactionItem.id} className="flex items-center justify-between p-4 border rounded-lg">
                             <div className="flex items-center gap-4">
                                 <div
-                                    className={`w-10 h-10 rounded-full flex items-center justify-center ${transactionItem.type === "purchase"
+                                    className={`w-10 h-10 rounded-full flex items-center justify-center 
+                                        ${transactionItem.type === "purchase"
                                         ? "bg-green-500/10"
                                         : transactionItem.type === "refund"
                                             ? "bg-blue-500/10"

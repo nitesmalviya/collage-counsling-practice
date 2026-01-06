@@ -20,7 +20,7 @@ interface ResourcesProps {
 const StudentResources = ({ resourcesData, totalResources }: ResourcesProps) => {
     const [resources, setResources] = useState<ResourceItem[]>(resourcesData || []);
     const [totalCount, setTotalCount] = useState(totalResources);
-    const [categories, setCategories] = useState<{ label: string, value: string | null }[]>(RESOURCE_CATEGORIES);
+    const categories = RESOURCE_CATEGORIES;
     const [isLoading, setIsLoading] = useState(false);
     const [pagination, setPagination] = useState<PaginationType>({
         page: DEFAULT_PAGINATION.PAGE,
@@ -33,7 +33,6 @@ const StudentResources = ({ resourcesData, totalResources }: ResourcesProps) => 
         setIsLoading(true);
         try {
             const res = await getAllResourcesAction(paginate);
-
             const fetchedResourcesData = res?.GetAllResources?.items || [];
             const count = res?.GetAllResources?.total || 0;
             setResources(prev => paginate.page > 1 ? [...prev, ...fetchedResourcesData] : fetchedResourcesData);
@@ -57,9 +56,8 @@ const StudentResources = ({ resourcesData, totalResources }: ResourcesProps) => 
             const newPagination = { ...pagination, page: DEFAULT_PAGINATION.PAGE, search: search };
             setPagination(newPagination);
             getFilteredResources(newPagination);
-        }, 500), []
+        }, 500), [pagination]
     );
-
 
     return (
         <div className="container mx-auto px-4 py-8">
