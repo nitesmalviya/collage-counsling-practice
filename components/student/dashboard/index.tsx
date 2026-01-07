@@ -34,15 +34,13 @@ const StudentDashboard = ({ dashboardStudentData, upcomingSessionDataList }: Das
 
 
     return (
-        <>
+         
             <div className="container mx-auto px-4 py-8">
                 <div className="space-y-8">
                     <PageHeader
                         title={`Welcome back, ${user.first_name}  ${user?.last_name}`}
                         description="Manage your sessions and help students succeed"
                     />
-
-                
 
                     {/* Stats Grid */}
                     <div className="grid gap-4 md:grid-cols-4">
@@ -142,7 +140,7 @@ const StudentDashboard = ({ dashboardStudentData, upcomingSessionDataList }: Das
                     </Card>
                 </div>
             </div>
-        </>
+        
     )
 }
 

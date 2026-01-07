@@ -24,3 +24,23 @@ export const GET_STUDENT_DASHBOARD_QUERY: DocumentNode = gql`
   }
 }
 `;
+
+export const GET_ADMIN_DASHBOARD_QUERY: DocumentNode = gql`
+query Users {
+  getAdminDashboard {
+    users {
+      active_status
+      created_at
+      email
+      first_name
+      id
+      last_name
+      role
+    }
+    activeSessions
+    growthRate
+    revenue
+    totalusers
+  }
+}
+`;

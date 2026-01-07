@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Home, Calendar, MessageSquare, DollarSign, Clock, LogOut, User, Wallet, BookOpen, Coins } from "lucide-react"
+import { Home, Calendar, MessageSquare, DollarSign, Clock, LogOut, User, Wallet, BookOpen, Coins, Users, BarChart3, Settings } from "lucide-react"
 import Link from "next/link"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { appLogout } from "@/store/actions/auth-action"
@@ -60,8 +60,21 @@ const Header = () => {
     { href: "/student/wallet", label: "Wallet", icon: Wallet },
     { href: "/student/resources", label: "Resources", icon: BookOpen },
   ]
-  if (user?.role === "student") {
+
+  const adminNavItems = [
+    { href: "/admin/dashboard", label: "Dashboard", icon: Home },
+    { href: "/admin/users", label: "Users", icon: Users },
+    { href: "/admin/payments", label: "Payments", icon: DollarSign },
+    { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+    { href: "/admin/settings", label: "Settings", icon: Settings },
+  ]
+
+  if (user?.role === "student") { 
     educatorNavItems.splice(0, educatorNavItems.length, ...studentNavItems);
+  } else if (user?.role === "admin") {
+    educatorNavItems.splice(0, educatorNavItems.length, ...adminNavItems);
+  } else {
+     educatorNavItems.splice(0, educatorNavItems.length, ...educatorNavItems);
   }
 
   const fetchTokenResponse = async () => {
