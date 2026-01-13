@@ -60,7 +60,7 @@ const AdminDashboard = ({ adminDashboardData }: any) => {
                     </div>
 
                     {/* Main Content Grid */}
-                    <div className="grid gap-6 md:grid-cols-2">
+                    <div className="grid gap-6 md:grid-cols-1">
                         {/* Recent Users */}
                         <Card>
                             <CardHeader>
@@ -92,7 +92,7 @@ const AdminDashboard = ({ adminDashboardData }: any) => {
                         </Card>
 
                         {/* Recent Transactions */}
-                        <Card>
+                        {/* <Card>
                             <CardHeader>
                                 <CardTitle>Recent Transactions</CardTitle>
                                 <CardDescription>Latest payment activity</CardDescription>
@@ -122,7 +122,7 @@ const AdminDashboard = ({ adminDashboardData }: any) => {
                                     <Link href="/admin/payments">View All Transactions</Link>
                                 </Button>
                             </CardContent>
-                        </Card>
+                        </Card> */}
                     </div>
 
                     {/* Quick Actions */}

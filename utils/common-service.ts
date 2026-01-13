@@ -279,18 +279,12 @@ export function generateUploadsFileName(file: File): string {
  * @returns Array of formatted session objects with id, title, educatorName, date, time, duration
  */
 export interface FormattedSession {
-  educator: any;
-  duration_min: ReactNode;
-  created_at: ReactNode;
   id: string;
   title: string;
   educatorName: string;
   date: string;
   time: string;
   duration: number;
-  first_name: string;
-  last_name: string;
-
 }
 
 export function mapUpcomingSessions(
@@ -339,14 +333,12 @@ export const getSessionDetails = (session: any) =>{
   const scheduledTime = session?.scheduledAt || session?.scheduled_at_start_time;
   const dateLabel = formatDate(scheduledTime);
   const timeLabel = formatTime(scheduledTime);
-
   return {
     educatorName,
     studentName,
     dateLabel,
     timeLabel
   };
-  
 }
 
 export default getSessionDetails;

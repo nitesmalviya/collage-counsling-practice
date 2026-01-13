@@ -63,7 +63,7 @@ const Sessions = ({ studentSessions }: SessionsProps) => {
       }
     }
 
-    fetchSessions()
+    fetchSessions();
 
     return () => {
       isMounted = false
