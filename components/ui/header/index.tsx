@@ -26,14 +26,18 @@ interface TokenResponse {
 const Header = () => {
   const dispatch = useAppDispatch();
   const [resToken, setResToken] = useState(0);
+  const [isHydrated, setIsHydrated] = useState(false);
   const { user } = useAppSelector((state) => state.auth)
   const router = useRouter();
   const pathname = usePathname();
 
-  const avatarSrc =
-    typeof user?.avatar_path === "string" && user.avatar_path.trim() !== ""
-      ? user.avatar_path
-      : defaultAvatar;
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
+  const avatarSrc = isHydrated && typeof user?.avatar_path === "string" && user.avatar_path.trim() !== ""
+    ? user.avatar_path
+    : defaultAvatar;
 
   const handleLogout = async () => {
     try {

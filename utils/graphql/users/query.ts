@@ -22,3 +22,48 @@ query Query($filter: AdminUsersFilterInput) {
 }
 
   `;
+
+export const UPDATE_USER_MUTATION = gql`
+mutation UpdateUser($updateUserId: String!, $updateUserInput: UpdateUserInput!) {
+  updateUser(id: $updateUserId, updateUserInput: $updateUserInput) {
+    message
+    success
+    user {
+      id
+      avatar_path
+      first_name
+      last_name
+      phone
+      active_status
+      role
+      created_at
+      profile {
+        specialization
+        session_description
+        session_topic
+      }
+    }
+  }
+}`;
+
+export const GET_USER_QUERY = gql`
+  query Query($userId: String!) {
+    user(id: $userId) {
+      avatar_path
+      email
+      first_name
+      last_name
+      phone
+      id
+      role
+      created_at
+      platform
+      profile {
+        specialization
+        amount
+      }
+      active_status
+    }
+  }
+`;
+

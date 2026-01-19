@@ -1,17 +1,15 @@
-"use client"
+import Analytics from "@/components/admin/analytics";
+import { getAnalyticsAction } from "@/utils/graphql/analytics/action";
 
-import { AdminNav } from "@/components/navigation/admin-nav"
-import { Card } from "@/components/ui/card"
+const AdminAnalytics = async () => {
+  const res = await getAnalyticsAction();
 
-export default function AdminAnalytics() {
+  const analyticsData = res || null;
+
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <Card className="p-8 text-center">
-          <h2 className="text-2xl font-bold mb-2">Analytics Dashboard</h2>
-          <p className="text-muted-foreground">Platform metrics and insights</p>
-        </Card>
-      </div>
-    </div>
+    <Analytics analyticsData={analyticsData} />
   )
 }
+
+
+export default AdminAnalytics;

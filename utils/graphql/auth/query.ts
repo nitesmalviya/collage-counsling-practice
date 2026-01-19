@@ -32,6 +32,15 @@ export const SIGN_IN_MUTATION: DocumentNode = gql`
 }
 `;
 
+export const SIGN_UP_MUTATION: DocumentNode = gql`
+ mutation SignUp($input: SignUpInput!) {
+  signUp(input: $input) {
+    message
+    success
+  }
+}
+`;
+
 export const GET_PRESIGNED_URL_MUTATION: DocumentNode = gql`
 mutation GetPresignedUrlForArray($input: PresignedUrlArrayInput!) {
   getPresignedUrlForArray(input: $input) {

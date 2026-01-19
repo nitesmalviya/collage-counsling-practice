@@ -323,3 +323,4 @@ export type TimeSlot = {
   is_available: boolean;
   is_disabled?: boolean;
 }
+

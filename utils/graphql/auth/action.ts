@@ -7,9 +7,10 @@ import {
   SIGN_IN_MUTATION,
   UPDATE_USER_MUTATION,
   GET_PRESIGNED_URL_MUTATION,
-  CHANGE_PASSWORD_MUTATION
+  CHANGE_PASSWORD_MUTATION,
+    SIGN_UP_MUTATION,
 } from "./query";
-import { SignInInput, SignInResponse, TokenResponse } from "@/lib/types";
+import { SignInInput, SignInResponse, SignupFormType, SignUpRespose, TokenResponse } from "@/lib/types";
 import { RefreshTokenRes } from "@/types/authType";
 
 export const signInAction = async ({
@@ -19,6 +20,11 @@ export const signInAction = async ({
 }): Promise<SignInResponse> => {
   const res = await fetchGraphQLMutation<SignInResponse>(SIGN_IN_MUTATION, variables);
   return res as SignInResponse;
+};
+
+export const signUpAction = async (variables: { input: SignupFormType }): Promise<SignUpRespose> => {
+  const res = await fetchGraphQLMutation<SignUpRespose>(SIGN_UP_MUTATION, variables);
+  return res as SignUpRespose;
 };
 
 export const changePasswordAction = async (form: ChangePasswordType): Promise<any> => {

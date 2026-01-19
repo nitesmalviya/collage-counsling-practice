@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Search, Filter, FileX } from "lucide-react"
 import UserCard from "./user-card"
 import { useCallback, useEffect, useState } from "react"
@@ -13,6 +13,7 @@ import { defaultUserPagination, getUserCountForTab, getUserTabKey } from "@/util
 import { USER_TAB_KEYS } from "@/utils/constant"
 import DataNotFound from "@/components/ui/data-not-found"
 import AddUserModal from "./add-user"
+import SearchFilter from "@/components/ui/search-filter"
 
 type SessionStatus = "all" | "students" | "educators";
 
@@ -134,6 +135,10 @@ const Users = ({
         }
     }, []);
 
+    const handleSearchChange = () => {
+        debugger
+    }
+
     return (
         <div className="min-h-screen bg-background">
             <div className="container mx-auto px-4 py-8">
@@ -149,20 +154,7 @@ const Users = ({
                     </div>
 
                     {/* Search and Filter */}
-                    <Card>
-                        <CardContent className="p-6">
-                            <div className="flex gap-4">
-                                <div className="flex-1 relative">
-                                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                                    <Input placeholder="Search users..." className="pl-10" />
-                                </div>
-                                <Button variant="outline">
-                                    <Filter className="w-4 h-4 mr-2" />
-                                    Filter
-                                </Button>
-                            </div>
-                        </CardContent>
-                    </Card>
+                     <SearchFilter onSearchChange={handleSearchChange}/>
 
                     <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
                         <TabsList>

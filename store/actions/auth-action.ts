@@ -1,7 +1,7 @@
 "use client";
 import { AppDispatch } from "../store";
 import * as authReducer from "../reducers/authReducer";
-import { getUpdatedTokenAction, signInAction, updateUserAction } from "@/utils/graphql/auth/action";
+import { getUpdatedTokenAction, signInAction, signUpAction, updateUserAction } from "@/utils/graphql/auth/action";
 import { SignInInput, SignupFormType } from "@/lib/types";
 import { UpdateUserType } from "@/types/profile";
 

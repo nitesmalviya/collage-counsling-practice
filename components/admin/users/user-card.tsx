@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge"
-import { Link, MoreVertical } from "lucide-react";
+import Link from "next/link";
+import { MoreVertical } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -9,11 +10,28 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useState } from "react";
 import { User } from "@/types/users";
+import EditUserModal from "./edit-user";
+import { getUserAction } from "@/utils/graphql/users/action";
 interface UserCardProps {
     user: User
 }
 const UserCard = ({ user }: UserCardProps) => {
     const [userData, setUserData] = useState(user);
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const [editOpen, setEditOpen] = useState(false);
+    const [editUserId, setEditUserId] = useState<string | null>(null);
+    const handleEditClick = () => {
+        setEditUserId(userData.id);
+        setEditOpen(true);
+    };
+    const handleUserUpdated = async () => {
+        const updatedUser = await getUserAction(userData.id);
+        if (updatedUser) setUserData(updatedUser);
+    };
+
+     
     return (
         <div className="flex items-center justify-between p-4 border rounded-lg">
             <div className="flex items-center gap-4">
@@ -34,7 +52,7 @@ const UserCard = ({ user }: UserCardProps) => {
                 </div>
             </div>
             <div className="flex items-center gap-2">
-                <Badge variant={"secondary"}>completed</Badge>
+                <Badge variant={userData.active_status ? "secondary" : "default"}>{userData.active_status ? "Active" : "Inactive"}</Badge>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button size="sm" variant="ghost">
@@ -42,10 +60,10 @@ const UserCard = ({ user }: UserCardProps) => {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <DropdownMenuItem >
-                            View  
+                        <DropdownMenuItem asChild>
+                            <Link href={`/admin/users/${userData.id}`}> View </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleEditClick}>Edit</DropdownMenuItem>
                         <DropdownMenuItem>
                             Active
                         </DropdownMenuItem>
@@ -54,6 +72,16 @@ const UserCard = ({ user }: UserCardProps) => {
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
+                <EditUserModal
+                    userId={editUserId}
+                    open={editOpen}
+                    onOpenChange={setEditOpen}
+                    onUserUpdated={() => {
+                        setEditOpen(false);
+                        setEditUserId(null);
+                        handleUserUpdated();
+                    }}
+                />
             </div>
         </div>
     )
