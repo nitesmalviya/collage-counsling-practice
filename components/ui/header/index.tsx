@@ -68,17 +68,17 @@ const Header = () => {
   const adminNavItems = [
     { href: "/admin/dashboard", label: "Dashboard", icon: Home },
     { href: "/admin/users", label: "Users", icon: Users },
-    { href: "/admin/payments", label: "Payments", icon: DollarSign },
     { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+    { href: "/admin/resources", label: "Resources", icon: BookOpen },
     { href: "/admin/settings", label: "Settings", icon: Settings },
   ]
 
-  if (user?.role === "student") { 
+  if (user?.role === "student") {
     educatorNavItems.splice(0, educatorNavItems.length, ...studentNavItems);
   } else if (user?.role === "admin") {
     educatorNavItems.splice(0, educatorNavItems.length, ...adminNavItems);
   } else {
-     educatorNavItems.splice(0, educatorNavItems.length, ...educatorNavItems);
+    educatorNavItems.splice(0, educatorNavItems.length, ...educatorNavItems);
   }
 
   const fetchTokenResponse = async () => {

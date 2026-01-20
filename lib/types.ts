@@ -324,3 +324,19 @@ export type TimeSlot = {
   is_disabled?: boolean;
 }
 
+
+export interface DashboardUser {
+    id: string;
+    first_name: string;
+    last_name: string;
+    role: "ADMIN" | "STUDENT" | "EDUCATOR";
+    created_at: string;
+}
+
+export interface AdminDashboardData {
+    totalusers: number;
+    revenue: number;
+    growthRate: string;
+    activeSessions: number;
+    users: DashboardUser[];
+}

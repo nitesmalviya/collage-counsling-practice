@@ -8,16 +8,18 @@ import ResourceCard from "./resource-card"
 import { useCallback, useState } from "react"
 import DataNotFound from "@/components/ui/data-not-found"
 import { debounce } from "@/utils/common-service"
-import { DEFAULT_PAGINATION, RESOURCE_CATEGORIES } from "@/utils/constant"
+import { DEFAULT_PAGINATION, PRIVATE_PATH, RESOURCE_CATEGORIES } from "@/utils/constant"
 import { getAllResourcesAction } from "@/utils/graphql/resources/action"
- 
+import Link from "next/link"
+
 
 interface ResourcesProps {
+    isAdmin?: boolean;
     resourcesData: ResourceItem[];
     totalResources: number;
 }
 
-const StudentResources = ({ resourcesData, totalResources }: ResourcesProps) => {
+const StudentResources = ({ isAdmin, resourcesData, totalResources }: ResourcesProps) => {
     const [resources, setResources] = useState<ResourceItem[]>(resourcesData || []);
     const [totalCount, setTotalCount] = useState(totalResources);
     const categories = RESOURCE_CATEGORIES;
@@ -65,6 +67,14 @@ const StudentResources = ({ resourcesData, totalResources }: ResourcesProps) => 
                 <PageHeader
                     title="Resource Library"
                     description="Manage your tokens and transactions"
+                    rightSlot={
+                        isAdmin && (
+                            <Button asChild>
+                                <Link href={PRIVATE_PATH.ADMIN_CREATE_RESOURCE}>Add Resource</Link>
+
+                            </Button>
+                        )
+                    }
                 />
                 {/* Search and Filter */}
                 <SearchFilter handleSearchDebounce={handleSearchDebounce} />
@@ -90,7 +100,10 @@ const StudentResources = ({ resourcesData, totalResources }: ResourcesProps) => 
                 {resources?.length ? (
                     <div className="grid gap-6 md:grid-cols-2">
                         {resources.map((resource) => (
-                            <ResourceCard key={resource.id} resource={resource} />
+                            <ResourceCard
+                                key={resource.id}
+                                resource={resource}
+                                isAdmin={isAdmin} />
                         ))}
                     </div>
                 ) : (

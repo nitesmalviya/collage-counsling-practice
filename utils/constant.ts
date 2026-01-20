@@ -8,6 +8,8 @@ export const PUBLIC_PATH = {
 
 export const PRIVATE_PATH = {
   DASHBOARD: "/dashboard",
+  ADMIN_RESOURCES: "/admin/resources",
+  ADMIN_CREATE_RESOURCE: "/admin/resources/create-resource",
 };
 
 export const ERROR_PATH = {

@@ -1,10 +1,53 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ResourceItem } from "@/types/resources";
-import { Download, FileText, Video } from "lucide-react";
+import { Download, FileText, Trash2, Video } from "lucide-react";
+import { ConfirmationBox } from "@/components/ui/confirmation-box"
+import { useState } from "react";
+import { toast } from "@/components/ui/use-toast";
+import { removeResourceAction } from "@/utils/graphql/resources/action";
 
-const ResourceCard = ({ resource }: { resource: ResourceItem }) => {
+interface ResourceCardProps {
+    resource: ResourceItemType;
+    isAdmin?: boolean;
+    onDeleted?: (payload: { id: string; message?: string }) => void;
+}
+
+const ResourceCard = ({ resource, isAdmin, onDeleted }: ResourceCardProps) => {
+    const [isDownloading, setIsDownloading] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    const handleConfirmDelete = async () => {
+        debugger
+        if (!resource?.id || isDeleting) return;
+
+        setIsDeleting(true);
+        try {
+            const res = await removeResourceAction(resource.id);
+            if (res?.success) {
+                if (onDeleted) onDeleted({ id: resource.id, message: res?.message });
+            } else {
+                toast({
+                    title: "Delete failed",
+                    description: res?.message || "Please try again.",
+                    variant: "destructive"
+                });
+                throw new Error(res?.message || "Failed to delete resource");
+            }
+        } catch (error: unknown) {
+            const err = error as { message?: string };
+            toast({
+                title: "Delete failed",
+                description: err?.message || "Please try again.",
+                variant: "destructive"
+            });
+        }
+        finally {
+            setIsDeleting(false);
+        }
+    }
+
+
     return (
         <Card key={resource.id}>
             <CardHeader>
@@ -22,7 +65,26 @@ const ResourceCard = ({ resource }: { resource: ResourceItem }) => {
                             <CardDescription className="mt-1">{resource.description}</CardDescription>
                         </div>
                     </div>
+                    {isAdmin && (
+                        <ConfirmationBox
+                            trigger={<Button
+                                variant="ghost"
+                                size="icon"
+                                aria-label="Delete resource"
+                                className="cursor-pointer"
+                                title="Delete resource"
+                            >
+                                <Trash2 className="w-4 h-4 text-destructive" />
+                            </Button>}
+                            title="Delete resource?"
+                            description={`This action will be permanently delete the resource "${resource.title}".`}
+                            confirmText="Delete"
+                            cancelText="Cancel"
+                            variant="secondary"
+                            onConfirm={handleConfirmDelete} />
+                    )}
                 </div>
+
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="flex items-center justify-between text-sm text-muted-foreground">

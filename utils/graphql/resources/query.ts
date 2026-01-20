@@ -23,3 +23,12 @@ export const GET_ALL_RESOURCES_QUERY: DocumentNode = gql`
     }
   }
 `;
+
+export const REMOVE_RESOURCE_MUTATION: DocumentNode = gql`
+  mutation RemoveResource($id: String!) {
+    RemoveResource(id: $id) {
+      message
+      success
+    }
+  }
+`;

@@ -2,7 +2,11 @@ import Resources from "@/components/student/resources/index"
 import { DEFAULT_PAGINATION } from "@/utils/constant";
 import { getAllResourcesAction } from "@/utils/graphql/resources/action";
 
-const StudentResources = async () => {
+interface ResourcesProps {
+  isAdmin?: boolean;
+}
+
+const StudentResources = async ({ isAdmin }: ResourcesProps) => {
 
   const res = await getAllResourcesAction({
     page: DEFAULT_PAGINATION.PAGE,
@@ -15,7 +19,11 @@ const StudentResources = async () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Resources resourcesData={resourcesData} totalResources={res?.GetAllResources?.total || 0} />
+      <Resources 
+        isAdmin={isAdmin} 
+        resourcesData={resourcesData} 
+        totalResources={res?.GetAllResources?.total || 0} 
+      />
     </div>
   )
 }

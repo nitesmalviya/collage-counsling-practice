@@ -7,6 +7,7 @@ interface SessionStatusOverviewProps {
 
 export default function SessionStatusChart({ userData }: SessionStatusOverviewProps) {
     const { cancelled, completed, upcoming, expired } = userData;
+    
     const sessionStats = [
         { name: SESSION_TABS.COMPLETED, value: completed, color: COLORS.green },
         { name: SESSION_TABS.UPCOMING, value: upcoming, color: COLORS.orange },
