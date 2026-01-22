@@ -64,12 +64,12 @@ const AddUserModal = ({ open, onOpenChange, onUserCreated }: AddUserModalProps) 
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-         
+
         if (validator.current.allValid()) {
             setIsLoading(true)
             const res = await signUp(form)
             setIsLoading(false);
-            
+
             console.log(res, "Responsive");
 
             if (res?.signUp?.success) {
