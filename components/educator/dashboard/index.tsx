@@ -1,6 +1,5 @@
 "use client"
 import { Calendar, DollarSign, Users } from "lucide-react"
-import { mockSessions } from "@/lib/mock-data"
 import DashboardCard from "@/components/ui/dashboard-card"
 import { UpcomingSessionsCard } from "@/components/ui/upcoming-sessions-card"
 import { AvailabilityCard } from "@/components/ui/availability-card"

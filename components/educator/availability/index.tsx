@@ -12,7 +12,6 @@ import { useToast } from "@/hooks/use-toast";
 
 
 const Availability = ({ data }: AvailabilityProps) => {
-  const { toast } = useToast();
   const [form, setForm] = useState<any>(data);
 
   return (
