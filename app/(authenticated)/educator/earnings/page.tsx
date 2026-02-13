@@ -1,27 +1,28 @@
-
-
-import { getEducatorTotalEarningsAction, getEducatorEarningsHistoryAction } from "@/utils/graphql/earnings/action";
+import { cookies } from "next/headers";
+import {
+  getEducatorTotalEarningsAction,
+  getEducatorEarningsHistoryAction
+} from "@/utils/graphql/earnings/action";
 import { EarningHistoryItem, EducatorTotalEarnings } from "@/types/earning";
 import { STORAGE_KEYS } from "@/utils/constant";
-import { cookies } from "next/headers";
-import Earnings from "@/components/educator/earnings"
+import Earnings from "@/components/educator/earnings";
 
 
 const EducatorEarnings = async () => {
   const cookieStore = await cookies();
-  const user = cookieStore.get(STORAGE_KEYS.USER)?.value;
-  const userId = JSON.parse(user || "{}")?.id;
+  const userCookie = cookieStore.get(STORAGE_KEYS.USER)?.value;
+  const userId = JSON.parse(userCookie || "{}")?.id;
 
-  const res = await getEducatorTotalEarningsAction({
+  const totalEarningsRes = await getEducatorTotalEarningsAction({
     userId: userId || ""
   });
 
-  const totalEarningsData: EducatorTotalEarnings = res?.getEducatorTotalEarnings || {};
+  const totalEarningsData: EducatorTotalEarnings = totalEarningsRes?.getEducatorTotalEarnings || {};
 
-  const resEarnings = await getEducatorEarningsHistoryAction({
+  const earningsHistoryRes = await getEducatorEarningsHistoryAction({
     userId: userId || ""
   });
-  const earningsHistoryData: EarningHistoryItem = resEarnings?.getEducatorEarningHistory.items || [];
+  const earningsHistoryData: EarningHistoryItem = earningsHistoryRes?.getEducatorEarningHistory.items || [];
 
   return (
     <Earnings
